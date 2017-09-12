@@ -3,8 +3,9 @@ jobs:
   build:
     working_directory: ~/working_directory
 
-    docker:
-      - image: node:6
+    - image: circleci/node:6-browsers
+      environment:
+        CHROME_BIN: "/usr/bin/google-chrome"
 
     steps:
       - checkout
@@ -12,18 +13,18 @@ jobs:
       - restore_cache:
           key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
 
-      - run:
-          name: Install Google Chrome
-          command: |
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-            sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-            apt-get update
-            apt-get install -y google-chrome-stable
-
-      - run:
-          name: Disable Sandboxing in Chrome
-          command: |
-            sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' "/opt/google/chrome/google-chrome"
+#      - run:
+#          name: Install Google Chrome
+#          command: |
+#            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+#            sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+#            apt-get update
+#            apt-get install -y google-chrome-stable
+#
+#      - run:
+#          name: Disable Sandboxing in Chrome
+#          command: |
+#            sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' "/opt/google/chrome/google-chrome"
 
       - run:
           name: System information
