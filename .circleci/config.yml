@@ -1,37 +1,50 @@
-defaults: &defaults
-  working_directory: ~/working_directory
-  steps:
-    - checkout
-    - run: |
-        curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo dpkg -i google-chrome.deb
-        sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
-        rm google-chrome.deb
-    - run: node --version
-    - run: npm --version
-    - restore_cache:
-        key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
-    - run: npm install
-    - save_cache:
-        key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
-        paths:
-          - ./node_modules
-    - run: npm test
-
 version: 2
 jobs:
-  build-node6:
-    <<: *defaults
+  build:
+    working_directory: ~/working_directory
+
     docker:
       - image: node:6
-  build-node8:
-    <<: *defaults
-    docker:
-      - image: node:8
-workflows:
-  version: 2
-  build:
-    jobs:
-      - build-node6
-      - build-node8
+      - image: selenium/standalone-chrome
+        env:
+          - DISPLAY=:99
+          - CHROME_BIN=/usr/bin/google-chrome
 
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+
+      - run:
+          name: Install Google Chrome
+          command: |
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+            sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+            apt-get update
+            apt-get install -y google-chrome-stable
+      - run:
+          name: Install Xvfb
+          command: apt-get install -y xvfb
+
+      - run:
+          name: Disable Sandboxing in Chrome
+          command: |
+            sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' "/opt/google/chrome/google-chrome"
+      - run:
+          name: System information
+          command: |
+            echo "node $(node -v)"
+            echo "npm v$(npm --version)"
+      - run:
+          name: Install dependencies
+          command: npm
+
+      - run:
+          name: Run Tests
+          command: npm test
+
+      - save_cache:
+          key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
