@@ -1,0 +1,36 @@
+defaults: &defaults
+  working_directory: ~/working_directory
+  steps:
+    - checkout
+    - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - run: dpkg -i google-chrome.deb
+    - run: sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
+    - run: rm google-chrome.deb
+    - run: node --version
+    - run: npm --version
+    - restore_cache:
+        key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+    - run: npm install
+    - save_cache:
+        key: v1-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+        paths:
+          - ./node_modules
+    - run: npm test
+
+version: 2
+jobs:
+  build-node6:
+    <<: *defaults
+    docker:
+      - image: node:6
+  build-node8:
+    <<: *defaults
+    docker:
+      - image: node:8
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-node6
+      - build-node8
+
