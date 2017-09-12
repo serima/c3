@@ -38,7 +38,7 @@ jobs:
             echo "npm v$(npm --version)"
       - run:
           name: Install dependencies
-          command: npm
+          command: npm install
 
       - run:
           name: Run Tests
