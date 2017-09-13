@@ -22,6 +22,7 @@ module.exports = function(config) {
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: true,
+    flags: ['--no-sandbox'],
     browserNoActivityTimeout: 120000,
   })
 };
