@@ -1,0 +1,49 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/serima/.nodebrew/node/v7.7.3/bin/node',
+1 verbose cli   '/Users/serima/.nodebrew/current/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'test' ]
+2 info using npm@4.1.2
+3 info using node@v7.7.3
+4 verbose run-script [ 'pretest', 'test', 'posttest' ]
+5 info lifecycle c3@0.4.17~pretest: c3@0.4.17
+6 silly lifecycle c3@0.4.17~pretest: no script for pretest, continuing
+7 info lifecycle c3@0.4.17~test: c3@0.4.17
+8 verbose lifecycle c3@0.4.17~test: unsafe-perm in lifecycle true
+9 verbose lifecycle c3@0.4.17~test: PATH: /Users/serima/.nodebrew/node/v7.7.3/lib/node_modules/npm/bin/node-gyp-bin:/Users/serima/src/github.com/serima/c3/node_modules/.bin:/usr/local/sbin:/Users/serima/.nodebrew/current/bin:/Users/serima/.anyenv/envs/rbenv/shims:/Users/serima/.anyenv/envs/rbenv/bin:/Users/serima/.anyenv/envs/pyenv/shims:/Users/serima/.anyenv/envs/pyenv/bin:/Users/serima/.anyenv/envs/phpenv/shims:/Users/serima/.anyenv/envs/phpenv/bin:/Users/serima/.anyenv/bin:/Users/serima/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin
+10 verbose lifecycle c3@0.4.17~test: CWD: /Users/serima/src/github.com/serima/c3
+11 silly lifecycle c3@0.4.17~test: Args: [ '-c',
+11 silly lifecycle   'npm run build && npm run lint && karma start karma.conf.js' ]
+12 silly lifecycle c3@0.4.17~test: Returned: code: 1  signal: null
+13 info lifecycle c3@0.4.17~test: Failed to exec test script
+14 verbose stack Error: c3@0.4.17 test: `npm run build && npm run lint && karma start karma.conf.js`
+14 verbose stack Exit status 1
+14 verbose stack     at EventEmitter.<anonymous> (/Users/serima/.nodebrew/node/v7.7.3/lib/node_modules/npm/lib/utils/lifecycle.js:279:16)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at EventEmitter.emit (events.js:194:7)
+14 verbose stack     at ChildProcess.<anonymous> (/Users/serima/.nodebrew/node/v7.7.3/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at ChildProcess.emit (events.js:194:7)
+14 verbose stack     at maybeClose (internal/child_process.js:899:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+15 verbose pkgid c3@0.4.17
+16 verbose cwd /Users/serima/src/github.com/serima/c3
+17 error Darwin 16.6.0
+18 error argv "/Users/serima/.nodebrew/node/v7.7.3/bin/node" "/Users/serima/.nodebrew/current/bin/npm" "run" "test"
+19 error node v7.7.3
+20 error npm  v4.1.2
+21 error code ELIFECYCLE
+22 error c3@0.4.17 test: `npm run build && npm run lint && karma start karma.conf.js`
+22 error Exit status 1
+23 error Failed at the c3@0.4.17 test script 'npm run build && npm run lint && karma start karma.conf.js'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the c3 package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     npm run build && npm run lint && karma start karma.conf.js
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs c3
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls c3
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]

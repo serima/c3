@@ -5,16 +5,20 @@ jobs:
 
 
     docker:
-      - image: circleci/node:6.11-browsers
+      - image: circleci/node:6
         env:
           - DISPLAY=:99
-          - CHROME_BIN=/usr/bin/google-chrome
+          - CHROME_BIN=/opt/google/chrome/google-chrome
     steps:
       - checkout
 
       - restore_cache:
           key: v2-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
 
+      - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - run: sudo dpkg -i google-chrome.deb
+      - run: sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
+      - run: rm google-chrome.deb
 #      - run:
 #          name: Install Google Chrome
 #          command: |
@@ -44,6 +48,6 @@ jobs:
             - ./node_modules
       - run:
           name: Run Tests
-          command: xvfb-run -a npm run test -- --browser=ChromeNoSandbox
+          command: npm run test -- --browser=ChromeNoSandbox
 
 
