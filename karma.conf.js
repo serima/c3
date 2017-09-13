@@ -20,9 +20,16 @@ module.exports = function(config) {
       reports: ['html', 'lcovonly', 'text-summary']
     },
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['ChromeNoSandbox'],
+    customLaunchers: {
+      ChromeNoSandbox: {
+        base: 'Chrome',
+        flags: [
+          '--no-sandbox',
+        ],
+      },
+    }
     singleRun: true,
-    flags: ['--no-sandbox'],
     browserNoActivityTimeout: 120000,
   })
 };
