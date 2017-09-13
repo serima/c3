@@ -28,7 +28,7 @@ module.exports = function(config) {
           '--no-sandbox',
         ],
       },
-    }
+    },
     singleRun: true,
     browserNoActivityTimeout: 120000,
   })
