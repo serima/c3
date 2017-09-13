@@ -44,6 +44,6 @@ jobs:
             - ./node_modules
       - run:
           name: Run Tests
-          command: npm test
+          command: xvfb-run -a npm run test -- --browser=ChromeNoSandbox
 
 
