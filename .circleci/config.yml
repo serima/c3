@@ -5,34 +5,15 @@ jobs:
 
 
     docker:
-      - image: circleci/node:6
+      - image: circleci/node:6-browsers
         env:
           - DISPLAY=:99
-          - CHROME_BIN=/opt/google/chrome/google-chrome
+          - CHROME_BIN=/usr/bin/google-chrome
     steps:
       - checkout
 
       - restore_cache:
-          key: v2-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
-
-      - run: sudo apt-get update && sudo apt-get install libappindicator1
-      - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-      - run: sudo dpkg -i google-chrome.deb
-      - run: sudo apt-get install -f
-      - run: sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
-      - run: rm google-chrome.deb
-#      - run:
-#          name: Install Google Chrome
-#          command: |
-#            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-#            sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-#            apt-get update
-#            apt-get install -y google-chrome-stable
-#
-#      - run:
-#          name: Disable Sandboxing in Chrome
-#          command: |
-#            sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' "/opt/google/chrome/google-chrome"
+          key: v3-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
 
       - run:
           name: System information
@@ -45,11 +26,9 @@ jobs:
           command: npm install
 
       - save_cache:
-          key: v2-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+          key: v3-npm-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
           name: Run Tests
-          command: npm run test -- --browser=ChromeNoSandbox
-
-
+          command: npm run test
