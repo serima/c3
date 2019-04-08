@@ -8,12 +8,11 @@ aliases:
       echo "$(google-chrome --version)"
 
   test_and_codecov: &test_and_codecov
-    steps:
-      - run: npm test
-      - run: npm run codecov
-      - store_artifacts:
-          path: htdocs
-          destination: htdocs
+    - run: npm test
+    - run: npm run codecov
+    - store_artifacts:
+        path: htdocs
+        destination: htdocs
 
 jobs:
   test_node8:
