@@ -1,14 +1,27 @@
 version: 2
+
+aliases:
+  echo_versions: &echo_versions
+    run: |
+      echo "node $(node -v)"
+      echo "npm v$(npm --version)"
+      echo "$(google-chrome --version)"
+
+  test_and_codecov: &test_and_codecov
+    steps:
+      - run: npm test
+      - run: npm run codecov
+      - store_artifacts:
+          path: htdocs
+          destination: htdocs
+
 jobs:
   test_node8:
     docker:
       - image: circleci/node:8-browsers
     steps:
       - checkout
-      - run: |
-          echo "node $(node -v)"
-          echo "npm v$(npm --version)"
-          echo "$(google-chrome --version)"
+      - <<: *echo_versions
       - restore_cache:
           key: npm-3-{{ checksum "package.json" }}
       - run: npm install
@@ -16,21 +29,15 @@ jobs:
           key: npm-3-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run: npm test
-      - run: npm run codecov
-      - store_artifacts:
-          path: htdocs
-          destination: htdocs
+      <<: *test_and_covedov
       - run: npx status-back -s -c circleci/htdocs -r c3js/c3 "preview build succes!" "https://${CIRCLE_BUILD_NUM}-11496279-gh.circle-artifacts.com/0/htdocs/index.html"
+
   test_node10:
     docker:
       - image: circleci/node:10-browsers
     steps:
       - checkout
-      - run: |
-          echo "node $(node -v)"
-          echo "npm v$(npm --version)"
-          echo "$(google-chrome --version)"
+      - <<: *echo_versions
       - restore_cache:
           key: npm-3-{{ checksum "package.json" }}
       - run: npm install
@@ -38,11 +45,7 @@ jobs:
           key: npm-3-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run: npm test
-      - run: npm run codecov
-      - store_artifacts:
-          path: htdocs
-          destination: htdocs
+      <<: *test_and_covedov
       - run: npx status-back -s -c circleci/htdocs -r c3js/c3 "preview build succes!" "https://${CIRCLE_BUILD_NUM}-11496279-gh.circle-artifacts.com/0/htdocs/index.html"
 
   docs:
